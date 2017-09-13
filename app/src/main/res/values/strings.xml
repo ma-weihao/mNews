@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">MNews</string>
+    <string name="app_name">News</string>
+    <string name="title_activity_news">NewsActivity</string>
+
+    <string name="settings">Settings</string>
+    <string name="sample_title">把银行卡和录取通知书一起寄来？学校，你是在带头违法啊</string>
+    <string name="article_image">article image</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="favourite">Favourites</string>
 </resources>
