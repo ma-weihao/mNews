@@ -1,4 +1,4 @@
-package club.wello.mnews;
+package club.wello.mnews.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import club.wello.mnews.R;
+import club.wello.mnews.SettingsActivity;
 import club.wello.mnews.adapter.NewsAdapter;
 import club.wello.mnews.entity.News;
 import club.wello.mnews.entity.NewsDao;

@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_favourite"
         android:title="@string/favourite"
-        android:icon="@drawable/ic_star_black_24dp"
+        android:icon="@drawable/ic_star_white_24dp"
         app:showAsAction="ifRoom" />
 
     <item

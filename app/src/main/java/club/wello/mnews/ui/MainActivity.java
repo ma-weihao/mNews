@@ -1,4 +1,4 @@
-package club.wello.mnews;
+package club.wello.mnews.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import club.wello.mnews.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragment() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        StoryListFragment storyFragment = new StoryListFragment();
-        fragmentTransaction.replace(R.id.story_list_fragment, storyFragment, "storyFragment");
+        StoryListFragment storyListFragment = new StoryListFragment();
+        fragmentTransaction.replace(R.id.story_list_fragment, storyListFragment, "storyListFragment");
         fragmentTransaction.commit();
     }
 }
