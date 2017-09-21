@@ -25,12 +25,13 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
 
-        initFragment();
+        initFragment(getIntent().getExtras());
     }
 
-    private void initFragment() {
+    private void initFragment(Bundle bundle) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         StoryDetailFragment storyFragment = new StoryDetailFragment();
+        storyFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.story_detail_frame_layout, storyFragment, "storyFragment");
         fragmentTransaction.commit();
     }

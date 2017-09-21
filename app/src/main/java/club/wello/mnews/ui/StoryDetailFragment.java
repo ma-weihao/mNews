@@ -106,6 +106,7 @@ public class StoryDetailFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        toolbar.setTitle(title);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +37,8 @@ import club.wello.mnews.utils.HttpUtils;
 
 public class StoryListFragment extends Fragment {
 
+    private static final String TAG = StoryListFragment.class.getSimpleName();
+
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.story_recycler)
@@ -45,21 +49,18 @@ public class StoryListFragment extends Fragment {
     private NewsAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-    private ArrayList<Story> storyList;
+    private ArrayList<Story> storyList = new ArrayList<>();
     private News news;
     private Gson gson;
     private NewsDao newsDao;
-
 
     public StoryListFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -75,12 +76,13 @@ public class StoryListFragment extends Fragment {
 
         init();
         loadData();
-
         return view;
     }
 
     private void init() {
         toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setNavigationIcon(null);
+        toolbar.setTitle("News");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -99,16 +101,18 @@ public class StoryListFragment extends Fragment {
     }
 
     private void loadData() {
+        gson = new Gson();
         HttpUtils.getNews(new OnGetListener() {
             @Override
             public void onNext(Object object) {
-//                news = (News) object;
-//                news.setJsonString(gson.toJson(news));
-//                news.setCreatedTime(new Date().getTime());
+                news = (News) object;
+                news.setJsonString(gson.toJson(news));
+                news.setCreatedTime(new Date().getTime());
 //                newsDao.deleteAll();
 //                newsDao.insert(news);
-//                storyList.addAll(news.stories);
-//                adapter.notifyDataSetChanged();
+                storyList.addAll(news.stories);
+                adapter.notifyDataSetChanged();
+                Log.d(TAG, "onNext: story size == " + storyList.size());
             }
         });
     }

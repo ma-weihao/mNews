@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="90dp"
+    android:id="@+id/story_card"
     android:layout_margin="3dp"
     app:cardCornerRadius="3dp">
 
