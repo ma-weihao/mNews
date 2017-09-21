@@ -22,7 +22,6 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import club.wello.mnews.R;
-import club.wello.mnews.SettingsActivity;
 import club.wello.mnews.adapter.NewsAdapter;
 import club.wello.mnews.entity.News;
 import club.wello.mnews.entity.NewsDao;
@@ -48,6 +47,7 @@ public class StoryListFragment extends Fragment {
 
     private NewsAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private boolean dualPane;
 
     private ArrayList<Story> storyList = new ArrayList<>();
     private News news;
@@ -69,8 +69,9 @@ public class StoryListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_story_list, container, false);
         ButterKnife.bind(this, view);
 
+        dualPane = getArguments() != null && getArguments().getBoolean("dual_pane");
         layoutManager = new LinearLayoutManager(getContext());
-        adapter = new NewsAdapter(getContext(), storyList);
+        adapter = new NewsAdapter(getContext(), storyList, dualPane);
         storyRecyclerView.setLayoutManager(layoutManager);
         storyRecyclerView.setAdapter(adapter);
 

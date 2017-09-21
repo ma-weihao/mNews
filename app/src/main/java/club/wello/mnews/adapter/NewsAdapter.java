@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -18,9 +19,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import club.wello.mnews.NewsActivity;
 import club.wello.mnews.R;
 import club.wello.mnews.entity.Story;
+import club.wello.mnews.listener.RefreshListener;
+import club.wello.mnews.ui.NewsActivity;
 import club.wello.mnews.utils.Constants;
 import club.wello.mnews.utils.ImageLoaderUtils;
 
@@ -29,17 +31,19 @@ import club.wello.mnews.utils.ImageLoaderUtils;
  * Created by maweihao on 2017/9/17.
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private static final String TAG = NewsAdapter.class.getSimpleName();
 
     private ArrayList<Story> storyList;
     private Context context;
     private SharedPreferences sharedPreferences;
+    private boolean dualPane;
 
-    public NewsAdapter(@NonNull Context context, ArrayList<Story> storyList) {
+    public NewsAdapter(@NonNull Context context, ArrayList<Story> storyList, boolean dualPane) {
         this.storyList = storyList;
         this.context = context;
+        this.dualPane = dualPane;
         sharedPreferences = context.getSharedPreferences(Constants.SAVE_FILE_NAME, Activity.MODE_PRIVATE);
     }
 
@@ -71,11 +75,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder>{
                 editor.putBoolean(story.getId(), true);
                 editor.apply();
                 holder.title.setTextColor(ContextCompat.getColor(context, R.color.item_selected_color));
-                Intent intent = new Intent(context, NewsActivity.class);
-                intent.putExtra(Constants.MAIN_TO_STORY_DETAIL_INTENT_KEY_ID, story.getId());
-                intent.putExtra("title", story.getTitle());
-                intent.putExtra("image", story.getImages().get(0));
-                context.startActivity(intent);
+
+                if (dualPane) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.MAIN_TO_STORY_DETAIL_INTENT_KEY_ID, story.getId());
+                    bundle.putString("title", story.getTitle());
+                    bundle.putString("image", story.getImages().get(0));
+                    ((RefreshListener) context).refreshData(bundle);
+                } else {
+                    Intent intent = new Intent(context, NewsActivity.class);
+                    intent.putExtra(Constants.MAIN_TO_STORY_DETAIL_INTENT_KEY_ID, story.getId());
+                    intent.putExtra("title", story.getTitle());
+                    intent.putExtra("image", story.getImages().get(0));
+                    context.startActivity(intent);
+                }
             }
         });
     }

@@ -1,4 +1,4 @@
-package club.wello.mnews;
+package club.wello.mnews.ui;
 
 
 import android.annotation.TargetApi;
@@ -21,6 +21,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import club.wello.mnews.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On

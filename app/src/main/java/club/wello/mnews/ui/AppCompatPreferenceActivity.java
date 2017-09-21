@@ -1,4 +1,4 @@
-package club.wello.mnews;
+package club.wello.mnews.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

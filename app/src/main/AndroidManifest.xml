@@ -19,12 +19,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewsActivity"
+            android:name=".ui.NewsActivity"
             android:label="@string/title_activity_news"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AboutActivity" />
+        <activity android:name=".ui.AboutActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
     </application>
 

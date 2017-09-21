@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,16 +30,16 @@ import club.wello.mnews.R;
 import club.wello.mnews.entity.NewsDetail;
 import club.wello.mnews.entity.StoryExtra;
 import club.wello.mnews.listener.OnGetListener;
+import club.wello.mnews.listener.RefreshListener;
 import club.wello.mnews.utils.HttpUtils;
 
 import static android.content.Context.MODE_PRIVATE;
 import static club.wello.mnews.utils.Constants.PREFERENCE_NAME_STORY_DETAIL;
 
-
 /**
  * story detail fragment
  */
-public class StoryDetailFragment extends Fragment {
+public class StoryDetailFragment extends Fragment implements RefreshListener{
 
     @BindView(R.id.webView)
     WebView webView;
@@ -67,6 +68,7 @@ public class StoryDetailFragment extends Fragment {
 
     private SharedPreferences preferences;
 
+    private static final String TAG = StoryListFragment.class.getSimpleName();
     private String id;
     private String title;
     private String imageUrl;
@@ -76,37 +78,46 @@ public class StoryDetailFragment extends Fragment {
     private int commentsCount;
     private boolean collected = false;
     private NewsDetail newsDetail;
-
+    private boolean dualPane;
 
     public StoryDetailFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_story_detail, container, false);
         ButterKnife.bind(this, view);
-        Bundle bundle = getArguments();
         preferences = getActivity().getSharedPreferences(PREFERENCE_NAME_STORY_DETAIL, MODE_PRIVATE);
-        id = bundle.getString("id");
-        title = bundle.getString("title");
-        imageUrl = bundle.getString("image");
+        Bundle bundle = getArguments();
 
+        if (bundle == null) {
+            dualPane = true;
+        }
         initToolbar();
         initWebView();
-        getData();
+
+        if (bundle != null) {
+            id = bundle.getString("id");
+            title = bundle.getString("title");
+            imageUrl = bundle.getString("image");
+            refreshData();
+        }
         return view;
     }
 
     private void initToolbar() {
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
-        toolbar.setTitle(title);
+        if (dualPane) {
+            toolbar.setNavigationIcon(null);
+        } else {
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().finish();
+                }
+            });
+            toolbar.setTitle(title);
+        }
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +154,7 @@ public class StoryDetailFragment extends Fragment {
         });
     }
 
-    private void getData() {
+    private void refreshData() {
         HttpUtils.getStoryExtra(id, new OnGetListener() {
             @Override
             public void onNext(Object object) {
@@ -189,5 +200,12 @@ public class StoryDetailFragment extends Fragment {
                 webView.loadDataWithBaseURL("file:///android_asset/", webContent, "authorText/html", "UTF-8", null);
             }
         });
+    }
+
+    public void refreshData(Bundle bundle) {
+        id = bundle.getString("id");
+        title = bundle.getString("title");
+        imageUrl = bundle.getString("image");
+        refreshData();
     }
 }

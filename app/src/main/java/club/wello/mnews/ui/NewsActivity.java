@@ -1,4 +1,4 @@
-package club.wello.mnews;
+package club.wello.mnews.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import club.wello.mnews.ui.StoryDetailFragment;
+import club.wello.mnews.R;
 
 public class NewsActivity extends AppCompatActivity {
 
